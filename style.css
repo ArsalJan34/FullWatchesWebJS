@@ -34,6 +34,7 @@ body {
   justify-content: space-between;
   align-items: center;
   z-index: 100;
+  border-bottom: 1px solid gray;
 }
 
 .logo {
@@ -232,8 +233,8 @@ body {
     position: relative;
     bottom: 0;
   border-top: gray 1px solid;
-  width: 100%;  
-  
+  width: 100%;
+
 }
 .footer-content{
   display: flex;
@@ -254,7 +255,68 @@ gap: 10px;
   font-weight: 500;
   margin: 0 10px;
 }
+/* men watches  page */
+.maintext {
+      font-weight: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 50px;
+    color: rgb(202, 145, 1);
+}
+.menwatch {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+.card{
+background: transparent;
+  border: 2px solid #605c5c;
+  border-radius: 14px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+  max-width: 320px;
+  margin: auto;
+}
+.card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+.card h3{
+  color: white;
 
+}
+ .price{
+  display: flex;
+ justify-content: center;
+  gap: 10px;
+ }
+.new-price{
+  color:white;
+
+}
+.old-price{
+  color: red;
+  font-weight: bold;
+  text-decoration: line-through;
+}
+.buy{
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  color: rgb(206, 206, 213);
+  background: black;
+  border: 1px gray solid;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 8px;
+
+}
   /* Optional hover effect */
 
 /* =============== ANIMATIONS =============== */
