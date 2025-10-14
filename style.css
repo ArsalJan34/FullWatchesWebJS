@@ -4,6 +4,8 @@
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
 }
 
 /* =============== BODY =============== */
@@ -20,7 +22,7 @@ body {
 
 /* =============== HEADER =============== */
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -43,10 +45,10 @@ body {
 /* =============== NAVBAR =============== */
 .navbar a {
   display: inline-block;
-  font-size: 18px;
+  font-size: 20px;
   color: white;
-  text-decoration: none;
   font-weight: 500;
+  text-decoration: none;
   margin: 0 15px;
   transition: .3s ease;
   animation: slideTop 1s ease forwards;
@@ -122,9 +124,8 @@ body {
   font-size: 16px;
   margin: 15px 0 30px;
   color: white;
-}
-
-.btn {
+}.btn {
+  position: relative; /* Needed for positioning the star */
   display: inline-block;
   padding: 10px 25px;
   background: none;
@@ -137,12 +138,33 @@ body {
   letter-spacing: 1px;
   font-weight: 500;
   transition: .3s ease;
+  cursor: pointer;
+  overflow: visible; /* allow the star to show outside the button */
 }
 
+/* Star hidden by default */
+.btn::after {
+  content: "✨";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+/* When hovering */
 .btn:hover {
   color: gold;
   transform: scale(1.1);
 }
+
+/* Show star on hover */
+.btn:hover::after {
+  transform: translateY(-50%) translateX(10px) scale(1.2);
+  opacity: 1;
+}
+
 
 /* =============== WATCH IMAGE =============== */
 .watch img {
@@ -202,6 +224,35 @@ body {
   color: white;
   font-size: 32px;
 }
+.footer{
+  text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    bottom: 0;
+  border-top: gray 1px solid;
+  width: 100%;  
+  
+}
+.footer-content{
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+}
+.f-links ul{
+display: flex;
+justify-content: space-between;
+gap: 10px;
+}
+.f-links ul li a{
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+  /* Optional hover effect */
 
 /* =============== ANIMATIONS =============== */
 @keyframes slideRight {
@@ -215,9 +266,23 @@ body {
 }
 
 /* =============== RESPONSIVE DESIGN =============== */
+@media (max-width: 1200px) {
+  .navbar a {
+    font-size: 16px;
+    margin: 0 8px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navbar a {
+    font-size: 14px;
+    margin: 0 5px;
+  }
+}
 
 /* Tablets */
 @media (max-width: 1024px) {
+
   .home {
     flex-direction: column;
     justify-content: center;
@@ -237,6 +302,7 @@ body {
     width: 500px;
     margin-top: 40px;
   }
+
 }
 
 /* Phones */
@@ -293,6 +359,12 @@ body {
   .home-content h1 {
     font-size: 28px;
   }
+  .footer-content, .f-links ul{
+ display: flex;
+ align-items: center;
+    flex-direction: column;
+  }
+
   .home-content h3 {
     font-size: 20px;
   }
