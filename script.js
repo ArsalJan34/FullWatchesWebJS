@@ -11,3 +11,5 @@ function hideSidebar(){
       link.classList.add('active');
     }
   });
+
+

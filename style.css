@@ -7,7 +7,9 @@
   text-decoration: none;
   list-style: none;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 /* =============== BODY =============== */
 body {
   background: url(./images/as.png) no-repeat center center fixed;
@@ -22,7 +24,7 @@ body {
 
 /* =============== HEADER =============== */
 .header {
-  position: sticky;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -250,6 +252,7 @@ gap: 10px;
   color: white;
   font-size: 18px;
   font-weight: 500;
+  margin: 0 10px;
 }
 
   /* Optional hover effect */
