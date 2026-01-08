@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZEKITH Watches</title>
+  <link rel="stylesheet" href="style1.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <a href="#" class="logo">ZEKITH</a>
+
+    <!-- Sidebar Menu (for mobile) -->
+    <nav class="sidebar">
+      <a href="#" onclick="hideSidebar()"><i class='bx bx-x'></i></a>
+      <a href="../index.html">Home</a>
+      <a href="./menwatch.html" class="active">Men Watch</a>
+      <a href="../womenwatch/womenwatch.html">Women Watch</a>
+      <a href="#">Couple Watch</a>
+      <a href="#">Our Story</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <!-- Normal Navbar (for desktop) -->
+    <nav class="navbar">
+      <a href="../index.html">Home</a>
+      <a href="./menwatch.html" class="active">Men Watch</a>
+      <a href="../womenwatch/womenwatch.html">Women Watch</a>
+      <a href="#">Couple Watch</a>
+      <a href="#">Our Story</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <!-- Social Media Links -->
+    <div class="social-media">
+      <a href="#"><i class='bx bxl-twitter'></i></a>
+      <a href="#"><i class='bx bxl-facebook-circle'></i></a>
+      <a href="#"><i class='bx bxl-instagram-alt'></i></a>
+    </div>
+
+    <!-- Mobile Menu Icon -->
+    <div class="menu-icon" onclick="showSidebar()">
+      <a href="#"><i class='bx bx-menu'></i></a>
+    </div>
+  </header>
+
+  <!-- Students Table -->
+  <table border="1">
+    <thead>
+      <tr>
+        <th>User Id</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="orders"></tbody>
+  </table>
+  <footer class="footer">
+    <div class="footer-content">
+      <a href="#" class="logo">ZEKITH</a>
+      <div class="f-links">
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="social-media">
+        <a href="#"><i class='bx bxl-twitter'></i></a>
+        <a href="#"><i class='bx bxl-facebook-circle'></i></a>
+        <a href="#"><i class='bx bxl-instagram-alt'></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Sidebar -->
+ <script>
+  const ordersTable = document.getElementById('orders');
+
+  // Load orders from Firestore
+  db.collection('Orders').get().then(snapshot => {
+    snapshot.docs.forEach(doc => {
+      const w = doc.data();
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${w.userId}</td>
+        <td>${w.productName}</td>
+        <td>${w.price}</td>
+        <td><button onclick="deleteOrder('${doc.id}')">Delete</button></td>
+      `;
+      ordersTable.appendChild(tr);
+    });
+  });
+
+  function deleteOrder(id) {
+    db.collection('Orders').doc(id).delete()
+      .then(() => location.reload())
+      .catch(err => console.error(err));
+  }
+
+  // Active nav link
+  document.querySelectorAll('nav a').forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add('active');
+    }
+  });
+
+  function showSidebar() {
+    document.querySelector('.sidebar').classList.add('show');
+  }
+
+  function hideSidebar() {
+    document.querySelector('.sidebar').classList.remove('show');
+  }
+</script>
+
+</body>
+
+</html>

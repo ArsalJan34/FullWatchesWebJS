@@ -6,6 +6,10 @@
   <title>ZEKITH Watches</title>
   <link rel="stylesheet" href="style1.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
 </head>
 <body>
   <header class="header">
@@ -48,76 +52,14 @@
   <section class="menwatch">
   <div class="card">
     <img src="./images/watch-removebg-preview.png" alt="watch">
-    <h3>ZEKITH Silver Stainless Steel</h3>
+    <h3 id="wname">ZEKITH Silver Stainless Steel</h3>
     <div class="price">
-      <span class="new-price">₨ 4,999</span>
+      <span id="wprice" class="new-price">₨ 4,999</span>
       <span class="old-price">₨ 6,999</span>
     </div>
-    <button href="#" class="buy">Add to cart</button>
+    <button onclick="addProduct()" class="buy">Add to cart</button>
   </div>
-    <div class="card">
-      <img src="./images/SV-7499_Cam001_M5.webp" alt="watch">
-      <h3>ZEKITH Black Stainless LOTUS 2.0</h3>
-      <div class="price">
-        <span class="new-price">₨ 4,999</span>
-        <span class="old-price">₨ 6,999</span>
-      </div>
-      <button href="#" class="buy">Add to cart</button>
-    </div>
-      <div class="card">
-        <img src="./images/SV-7526_Cam001M2.webp" alt="watch">
-        <h3>ZEKITH Silver Stainless Steel</h3>
-        <div class="price">
-          <span class="new-price">₨ 4,999</span>
-          <span class="old-price">₨ 6,999</span>
-        </div>
-        <button href="#" class="buy">Add to cart</button>
-      </div>
-        <div class="card">
-          <img src="./images/SV-7529_Cam001_M4.webp" alt="watch">
-          <h3>ZEKITH Silver Stainless Steel</h3>
-          <div class="price">
-            <span class="new-price">₨ 4,999</span>
-            <span class="old-price">₨ 6,999</span>
-          </div>
-          <button href="#" class="buy">Add to cart</button>
-        </div>
-          <div class="card">
-            <img src="./images/SV-7550_Cam001_M1_9f9b590f-7543-4e5c-b788-b7110a1fbcb3.webp" alt="watch">
-            <h3>ZEKITH Silver Stainless Steel</h3>
-            <div class="price">
-              <span class="new-price">₨ 4,999</span>
-              <span class="old-price">₨ 6,999</span>
-            </div>
-            <button href="#" class="buy">Add to cart</button>
-          </div>
-            <div class="card">
-              <img src="./images/SV-9371_Cam001_M1.webp" alt="watch">
-              <h3>ZEKITH Silver Stainless Steel</h3>
-              <div class="price">
-                <span class="new-price">₨ 4,999</span>
-                <span class="old-price">₨ 6,999</span>
-              </div>
-              <button href="#" class="buy">Add to cart</button>
-            </div>
-              <div class="card">
-                <img src="./images/SV-10056_Cam001_M7.webp" alt="watch">
-                <h3>ZEKITH Silver Stainless Steel</h3>
-                <div class="price">
-                  <span class="new-price">₨ 4,999</span>
-                  <span class="old-price">₨ 6,999</span>
-                </div>
-                <button href="#" class="buy">Add to cart</button>
-              </div>
-        <div class="card">
-          <img src="./images/SV-11297_3.0_Cam001_M11.webp" alt="watch">
-          <h3>ZEKITH Silver Stainless Steel</h3>
-          <div class="price">
-            <span class="new-price">₨ 4,999</span>
-            <span class="old-price">₨ 6,999</span>
-          </div>
-          <button href="#" class="buy">Add to cart</button>
-        </div>
+
   </section>
   <footer class="footer">
     <div class="footer-content">
@@ -138,8 +80,50 @@
   </footer>
 
   <!-- JavaScript for Sidebar -->
-  <script src="/script.js">
+<script>
+  function addProduct() {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Please login first!");
+      window.location.href = "../login.html";
+      return;
+    }
 
-  </script>
+    const name = document.getElementById('wname').innerText;
+    const priceText = document.getElementById('wprice').innerText;
+    const price = Number(priceText.replace(/[^\d]/g, "")); // Remove ₨ and commas
+
+    // Create a new document under Orders collection
+    db.collection('Orders').doc(user.uid + "_" + Date.now()).set({
+      productName: name,
+      price: price,
+      userId: user.uid,
+      createdAt: new Date()
+    })
+      .then(() => {
+        alert("Added to cart 🛒");
+      })
+      .catch(err => {
+        console.error(err);
+        alert(err.message);
+      });
+  }
+
+  // Highlight active nav link
+  document.querySelectorAll('nav a').forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add('active');
+    }
+  });
+
+  function showSidebar() {
+    document.querySelector('.sidebar').classList.add('show');
+  }
+
+  function hideSidebar() {
+    document.querySelector('.sidebar').classList.remove('show');
+  }
+</script>
+
 </body>
 </html>
