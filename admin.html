@@ -95,13 +95,13 @@
       const numberOrders = document.getElementById('number1');
       const totalSales = document.getElementById('number3');
 
-  // Real-time listener for Users collection
+ 
   db.collection('Customers').onSnapshot(snapshot => {
     const totalUsers = snapshot.size; // number of documents in Users
       numberUsers.textContent = totalUsers;
   });
 
-  // Real-time listener for Orders collection
+
   db.collection('Orders').onSnapshot(snapshot => {
     const totalOrders = snapshot.size; // number of orders
       numberOrders.textContent = totalOrders;
