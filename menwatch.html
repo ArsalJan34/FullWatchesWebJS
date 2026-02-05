@@ -55,11 +55,13 @@
 <div class="card">
   <img src="./images/watch-removebg-preview.png" alt="watch">
   <h3 class="wname">ZEKITH Silver Stainless Steel</h3>
+  <h3 class="wgender">Male</h2>
   <div class="price">
     <span class="wprice new-price">₨ 4,999</span>
     <span class="old-price">₨ 6,999</span>
+
   </div>
-  <button class="buy" data-id="prod_001" data-name="ZEKITH Silver Stainless Steel" data-price="4999"
+  <button class="buy" data-id="prod_001" data-name="ZEKITH Silver Stainless Steel" data-price="4999" data-gender="Male"  data-image="./images/watch-removebg-preview.png"
     onclick="openCartModal(this)">
     Add to cart
   </button>
@@ -68,12 +70,19 @@
 <div id="cartModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeCartModal()">&times;</span>
-    <h3 id="modalName"></h3>
-    <p id="modalPrice"></p>
+
+    <div class="modal-product">
+      <img id="modalImage" alt="watch">
+      <div>
+        <h4 id="modalName"></h4>
+        <h4 id="modalGender"></h4>
+        <span id="modalPrice"></span>
+      </div>
+    </div>
+
     <button onclick="confirmAddToCart()">Confirm Add to Cart</button>
   </div>
 </div>
-
 
   </section>
   <footer class="footer">
@@ -98,17 +107,20 @@
   <script>
   let selectedProduct = {};
 
-  function openCartModal(button) {
+ function openCartModal(button) {
     selectedProduct.id = button.dataset.id;
     selectedProduct.name = button.dataset.name;
     selectedProduct.price = Number(button.dataset.price);
+    selectedProduct.gender = button.dataset.gender;
+    selectedProduct.image = button.dataset.image;
 
     document.getElementById('modalName').innerText = selectedProduct.name;
+    document.getElementById('modalGender').innerText = selectedProduct.gender;
     document.getElementById('modalPrice').innerText = `₨ ${selectedProduct.price}`;
+    document.getElementById('modalImage').src = selectedProduct.image;
 
     document.getElementById('cartModal').classList.add('show');
   }
-
   function confirmAddToCart() {
     const user = auth.currentUser;
     if (!user) {
