@@ -30,7 +30,7 @@
 
       auth.createUserWithEmailAndPassword(email, password)
         .then(cred => {
-          return db.collection('Customers').doc(cred.user.uid).set({
+          return db.collection('WatchesCustomers').doc(cred.user.uid).set({
             name: name,
             email: email,
             isAdmin: false
