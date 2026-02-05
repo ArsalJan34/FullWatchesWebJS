@@ -62,7 +62,8 @@
   <table border="1">
     <thead>
       <tr>
-        <th>User Id</th>
+        <th id="userid">UserId</th>
+        <th>Product Id</th>
         <th>Product Name</th>
         <th>Price</th>
         <th>Image</th>
@@ -118,27 +119,69 @@
 
 
   const ordersTable = document.getElementById('orders');
-
+// db.collection('WatchesCustomers').get().then(snapshot=>{
+//   snapshot.docs.forEach(doc => {
+//     const u = doc.data();
+//     const tr = document.createElement('tr');
+//     tr.innerHTML = `
+//     `
+//   })
+// })
   // Load orders from Firestore
-  db.collection('Orders').get().then(snapshot => {
-    snapshot.docs.forEach(doc => {
-      const w = doc.data();
+//   db.collection('WatchesCustomers').get(), db.collection('Orders').get().then(snapshot => {
+//     snapshot.docs.forEach(doc => {
+//       const w = doc.data();
+//       const tr = document.createElement('tr');
+//       tr.innerHTML = `
+//         <td>${w.email}</td>
+//         <td>${w.productId}</td>
+//         <td>${w.productName}</td>
+//         <td>${w.price}</td>
+//          <td>
+//   <a href="${w.image}" target="_blank">
+//     <img src="${w.image}" alt="${w.productName}" style="width:80px; object-fit:contain;">
+//   </a>
+// </td>
+//         <td><button onclick="deleteOrder('${doc.id}')">Delete</button></td>
+//       `;
+//       ordersTable.appendChild(tr);
+//     });
+//   });
+
+  Promise.all([
+    db.collection('WatchesCustomers').get(),
+    db.collection('Orders').get()
+  ]).then(([customersSnapshot, ordersSnapshot]) => {
+
+    // Create a lookup map: userId -> user info
+    const usersMap = {};
+    customersSnapshot.docs.forEach(doc => {
+      const u = doc.data();
+      usersMap[u.userId] = u; // or use email if you prefer
+    });
+
+    // Loop through Orders
+    ordersSnapshot.docs.forEach(doc => {
+      const order = doc.data();
+      const user = usersMap[order.userId]; // find user info
+
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${w.userId}</td>
-        <td>${w.productName}</td>
-        <td>${w.price}</td>
-         <td>
-  <a href="${w.image}" target="_blank">
-    <img src="${w.image}" alt="${w.productName}" style="width:80px; object-fit:contain;">
-  </a>
-</td>
-        <td><button onclick="deleteOrder('${doc.id}')">Delete</button></td>
-      `;
+      <td>${user ? user.email : '-'}</td>
+      <td>${order.productId || '-'}</td>
+      <td>${order.productName || '-'}</td>
+      <td>₨ ${order.price || 0}</td>
+      <td>
+        ${order.image ? `<a href="${order.image}" target="_blank">
+                          <img src="${order.image}" alt="${order.productName}" style="width:80px; object-fit:contain;">
+                        </a>` : '-'}
+      </td>
+      <td><button onclick="deleteOrder('${doc.id}')">Delete</button></td>
+    `;
       ordersTable.appendChild(tr);
     });
-  });
 
+  }).catch(err => console.error(err));
   function deleteOrder(id) {
     db.collection('Orders').doc(id).delete()
       .then(() => location.reload())
