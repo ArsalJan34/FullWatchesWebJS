@@ -231,14 +231,7 @@
 
   <!-- JavaScript for Sidebar -->
   <script>
-    auth.onAuthStateChanged(user => {
-        if (!user) {
-          window.location.href = "../login.html";
-          return;
-        }
 
-        loadUserOrders(user.uid);
-      });
   let selectedProduct = {};
 
  function openCartModal(button) {
