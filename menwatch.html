@@ -255,13 +255,13 @@
       window.location.href = "../login.html";
       return;
     }
-
     db.collection('Orders').doc(user.uid + "_" + Date.now()).set({
+      userId: user.uid, // THIS IS REQUIRED
       productId: selectedProduct.id,
       productName: selectedProduct.name,
       price: selectedProduct.price,
-       image: selectedProduct.image,
-      createdAt: new Date()
+      image: selectedProduct.image,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
       .then(() => {
         alert("Added to cart 🛒");
