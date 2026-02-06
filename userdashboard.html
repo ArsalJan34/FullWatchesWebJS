@@ -93,83 +93,94 @@
 
   <!-- JavaScript for Sidebar -->
 
-  <script>
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-              window.location.href = "../login.html";
-              return;
-            }
+ <script>
+  // 🔐 Auth guard
+  auth.onAuthStateChanged(user => {
+    if (!user) {
+      window.location.href = "../login.html";
+      return;
+    }
+    loadUserOrders(user.uid);
+  });
 
-            loadUserOrders(user.uid);
-          });
-          function loadUserOrders(uid) {
-              const ordersTable = document.getElementById('orders');
-              ordersTable.innerHTML = "";
+  // 📦 Load only this user's orders
+  function loadUserOrders(uid) {
+    const ordersTable = document.getElementById('orders');
+    ordersTable.innerHTML = "";
 
-              db.collection('Orders')
-                .where('userId', '==', uid)
-                .orderBy('createdAt', 'desc')
-                .get()
-                .then(snapshot => {
-                  if (snapshot.empty) {
-                    ordersTable.innerHTML = `
+    db.collection('Orders')
+      .where('userId', '==', uid)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          ordersTable.innerHTML = `
+            <tr>
+              <td colspan="4">No orders found</td>
+            </tr>
+          `;
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const order = doc.data();
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${order.productName || '-'}</td>
+            <td>₨ ${order.price || 0}</td>
+            <td>
+              ${order.image ? `
+                <a href="${order.image}" target="_blank">
+                  <img src="${order.image}" style="width:80px; object-fit:contain;">
+                </a>
+              ` : '-'}
+            </td>
+            <td>
+              <button onclick="deleteOrder('${doc.id}')">Delete</button>
+            </td>
+          `;
+
+          ordersTable.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        ordersTable.innerHTML = `
           <tr>
-            <td colspan="4">No orders found</td>
+            <td colspan="4">Error loading orders</td>
           </tr>
         `;
-                    return;
-                  }
+      });
+  }
 
-                  snapshot.forEach(doc => {
-                    const order = doc.data();
-
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-          <td>${order.productName}</td>
-          <td>₨ ${order.price}</td>
-          <td>
-            <a href="${order.image}" target="_blank">
-              <img src="${order.image}" style="width:80px; object-fit:contain;">
-            </a>
-          </td>
-          <td>
-            <button onclick="deleteOrder('${doc.id}')">Delete</button>
-          </td>
-        `;
-
-                    ordersTable.appendChild(tr);
-                  });
-                })
-                .catch(err => console.error(err));
-            }
-  function deleteOrder(id) {
+  // 🗑 Delete only own order
+  function deleteOrder(orderId) {
     const user = auth.currentUser;
     if (!user) return;
 
-    db.collection('Orders').doc(id).get().then(doc => {
-      if (!doc.exists) return;
+    db.collection('Orders').doc(orderId).get()
+      .then(doc => {
+        if (!doc.exists) return;
 
-      if (doc.data().userId !== user.uid) {
-        alert("Unauthorized action");
-        return;
-      }
+        if (doc.data().userId !== user.uid) {
+          alert("Unauthorized action");
+          return;
+        }
 
-      return db.collection('Orders').doc(id).delete();
-    })
-      .then(() => location.reload())
+        return db.collection('Orders').doc(orderId).delete();
+      })
+      .then(() => {
+        location.reload();
+      })
       .catch(err => console.error(err));
   }
 
+  // 📱 Sidebar controls
+  function showSidebar() {
+    document.querySelector('.sidebar').classList.add('show');
+  }
 
-    function showSidebar() {
-      document.querySelector('.sidebar').classList.add('show');
-    }
-
-    function hideSidebar() {
-      document.querySelector('.sidebar').classList.remove('show');
-    }
-  </script>
-
-</body>
-
-</html>
+  function hideSidebar() {
+    document.querySelector('.sidebar').classList.remove('show');
+  }
+</script>
