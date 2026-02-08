@@ -110,6 +110,7 @@
         });
     }
   function deleteOrder(id) {
+    if(!confirm("Are you sure you want to delete this product")) return;
     db.collection('Orders').doc(id).delete()
       .then(() => location.reload())
       .catch(err => console.error(err));
