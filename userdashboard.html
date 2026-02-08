@@ -48,6 +48,7 @@
         <th>Price</th>
         <th>Image</th>
         <th>Date</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody id="orders"></tbody>
@@ -98,6 +99,7 @@
                 ? order.createdAt.toDate().toLocaleDateString()
                 : '-'}
             </td>
+            <td><button onclick="deleteOrder('${doc.id}')">Delete</button></td>
           `;
 
             ordersTable.appendChild(tr);
@@ -106,6 +108,11 @@
           totalSpentEl.textContent = `₨ ${totalSpent}`;
         });
     }
+  function deleteOrder(id) {
+    db.collection('Orders').doc(id).delete()
+      .then(() => location.reload())
+      .catch(err => console.error(err));
+  }
 
     function logout() {
       firebase.auth().signOut().then(() => {
