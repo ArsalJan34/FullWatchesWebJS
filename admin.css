@@ -86,7 +86,10 @@ body {
   color: #d4af37;
   font-size: 20px;
 }
-
+/* Status css */
+.status.pending { color: orange; font-weight: bold; }
+.status.shipped { color: blue; font-weight: bold; }
+.status.completed { color: green; font-weight: bold; }
 /* ==================== INFO BOXES ==================== */
 .info {
   display: flex;
