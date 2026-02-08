@@ -21,6 +21,7 @@
     <a href="#" class="logo">ZEKITH</a>
 
     <nav class="navbar">
+      <a href="#" onclick="GoBack()">Purchase</a>
       <a href="#">My Orders</a>
       <a href="#" onclick="logout()">Logout</a>
     </nav>
@@ -113,7 +114,8 @@
       .then(() => location.reload())
       .catch(err => console.error(err));
   }
-
+    function GoBack(){
+      window.location.href = "
     function logout() {
       firebase.auth().signOut().then(() => {
         window.location.href = "login.html";
