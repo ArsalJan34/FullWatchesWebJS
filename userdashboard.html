@@ -44,11 +44,12 @@
   <table border="1">
     <thead>
       <tr>
-        <th>Product ID</th>
+       
         <th>Product Name</th>
         <th>Price</th>
         <th>Image</th>
         <th>Date</th>
+        <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -86,7 +87,6 @@
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-            <td>${order.productId || '-'}</td>
             <td>${order.productName || '-'}</td>
             <td>₨ ${order.price || 0}</td>
             <td>
@@ -100,6 +100,11 @@
                 ? order.createdAt.toDate().toLocaleDateString()
                 : '-'}
             </td>
+            <td>
+  <span class="status ${order.status}">
+    ${order.status || 'pending'}
+  </span>
+</td>
             <td><button onclick="deleteOrder('${doc.id}')">Delete</button></td>
           `;
 
