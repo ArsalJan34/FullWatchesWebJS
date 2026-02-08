@@ -261,6 +261,7 @@
       productName: selectedProduct.name,
       price: selectedProduct.price,
       image: selectedProduct.image,
+      status: "pending", 
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
       .then(() => {
