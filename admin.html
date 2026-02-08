@@ -67,6 +67,7 @@
         <th>Product Name</th>
         <th>Price</th>
         <th>Image</th>
+        <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -176,6 +177,13 @@
                           <img src="${order.image}" alt="${order.productName}" style="width:80px; object-fit:contain;">
                         </a>` : '-'}
       </td>
+      <td>
+  <select onchange="updateStatus('${doc.id}', this.value)">
+    <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+    <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+    <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+  </select>
+</td>
       <td><button onclick="deleteOrder('${doc.id}')">Delete</button></td>
     `;
       ordersTable.appendChild(tr);
@@ -187,7 +195,19 @@
       .then(() => location.reload())
       .catch(err => console.error(err));
   }
-
+    // status update
+   function updateStatus(orderId, newStatus) {
+  db.collection('Orders').doc(orderId).update({
+    status: newStatus
+  })
+  .then(() => {
+    alert("Order status updated");
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Failed to update status");
+  });
+}
   // Active nav link
   document.querySelectorAll('nav a').forEach(link => {
     if (link.href === window.location.href) {
