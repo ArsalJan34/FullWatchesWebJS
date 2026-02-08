@@ -17,7 +17,7 @@
     <h2>Login</h2>
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
-    <input
+    <input type="password" id="confirmpassword" placeholder="Confirm Password">
     <button onclick="login()">Login</button>
     <p>Don't have an account? <a href="index.html">Signup</a></p>
   </div>
@@ -28,11 +28,18 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
       const confirmPassword = document.getElementById('confirmpassword').value.trim();
+      if (!email || !password || !confirmpassword){
+        alert("All fields are required");
 
+      // confirm password 
+        if(password !== confirmpassword){
+          alert("Password doesn't match try again");
+          return;}
+        
       auth.signInWithEmailAndPassword(email, password)
         .then((cred) => {
           console.log("Logged in:", cred.user.email);
-
+             
           db.collection('WatchesCustomers').doc(cred.user.uid).get()
             .then(doc => {
               if (doc.exists && doc.data().isAdmin === true) {
