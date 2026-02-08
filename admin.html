@@ -94,6 +94,15 @@
   <!-- JavaScript for Sidebar -->
 
   <script>
+    firebase.auth().onAuthStateChanged(async user => {
+  if (!user) {
+    alert("Not logged in");
+    return;
+  }
+
+  const token = await user.getIdTokenResult();
+  console.log("ADMIN CLAIM:", token.claims.admin);
+});
       const numberUsers = document.getElementById('number2');
       const numberOrders = document.getElementById('number1');
       const totalSales = document.getElementById('number3');
