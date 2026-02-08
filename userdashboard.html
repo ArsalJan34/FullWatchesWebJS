@@ -114,7 +114,7 @@
     db.collection('Orders').doc(id).delete()
       .then(() => { 
         alert("Product deleted successfully");
-        location.reload());
+
       })
       .catch(err =>{
         console.error(err));
