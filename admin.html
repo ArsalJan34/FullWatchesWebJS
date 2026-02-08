@@ -99,7 +99,7 @@
       const totalSales = document.getElementById('number3');
 
 
-  db.collection('Customers').onSnapshot(snapshot => {
+  db.collection('WatchesCustomers').onSnapshot(snapshot => {
     const totalUsers = snapshot.size; // number of documents in Users
       numberUsers.textContent = totalUsers;
   });
