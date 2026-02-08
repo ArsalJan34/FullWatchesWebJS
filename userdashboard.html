@@ -109,18 +109,19 @@
           totalSpentEl.textContent = `₨ ${totalSpent}`;
         });
     }
-  function deleteOrder(id) {
-    if(!confirm("Are you sure you want to delete this product")) return;
-    db.collection('Orders').doc(id).delete()
-      .then(() => { 
-        alert("Product deleted successfully");
+function deleteOrder(id) {
+  if (!confirm("Are you sure you want to delete this product?")) return;
 
-      })
-      .catch(err =>{
-        console.error(err));
-        alert("Failed to delete product");
-      });
-  }
+  db.collection('Orders').doc(id).delete()
+    .then(() => {
+      alert("Product deleted successfully");
+
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Failed to delete product");
+    });
+}
     function GoBack(){
       window.location.href = "menwatch.html";
     }
